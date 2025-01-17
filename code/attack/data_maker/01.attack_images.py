@@ -166,7 +166,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     attacks = [
-        # LinfProjectedGradientDescentAttack(),
+        LinfProjectedGradientDescentAttack(),
                LinfFastGradientAttack(),  # FGSM
                L1ProjectedGradientDescentAttack(),  # L1PGD
                L2ProjectedGradientDescentAttack(),  # L2PGD
