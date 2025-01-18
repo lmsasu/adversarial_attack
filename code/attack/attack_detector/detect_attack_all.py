@@ -214,7 +214,7 @@ def main():
     difference = 2  # 0 = original dataset; 1 = first order difference; 2 = second order difference
     differences = [0, 1, 2]
     for difference in tqdm(differences, total=len(differences)):
-        logging.info(f'{difference=}')
+        logging.info(f'main loop: {difference=}')
         root_images_attack = '../../images/attacked_split'
         # root_images_attack = '../images/detect_attack_mixeddatasets'  # evaluate on two merged datasets
         # root_images_attack = '../../images/detect_attack_crossed'
@@ -222,7 +222,7 @@ def main():
         # experiment_dir = 'cifar10_ResNet18_attacker=LinfFastGradient_epsilon=0.01'   # FGSM, works fine genuine and 1st, 2nd order difference
         experiment_dirs = sorted([d for d in os.listdir(root_images_attack) if os.path.isdir(os.path.join(root_images_attack, d))])
         for experiment_dir in tqdm(experiment_dirs, initial=1):
-            logging.info(f'{experiment_dir=}')
+            logging.info(f'running {experiment_dir=}')
 
             # experiment_dir ='tiny_imagenet_200_ResNet18_attacker=LinfFastGradient_epsilon=0.01'
             # experiment_dir = 'cifar100_ResNet18_attacker=LinfFastGradient_epsilon=0.03'
