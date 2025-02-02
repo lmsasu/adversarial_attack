@@ -6,3 +6,6 @@ matplotlib
 tensorboard
 torch
 torchinfo
+eagerpy
+foolbox
+

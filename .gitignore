@@ -172,3 +172,8 @@ cython_debug/
 /images/attacked/
 /images/attacked_split/
 /code/attack/saved_models/
+/code/attack/fgsm/
+/code/attack/foolbox/
+/code/attack/models/
+/code/attack/notebooks/
+/code/attack/.idea/

@@ -4,7 +4,6 @@ import shutil
 
 from tqdm import tqdm
 
-from data_maker.save_cifar import write_dataset
 from utils.timing import timeit
 
 
