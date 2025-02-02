@@ -46,8 +46,6 @@ def get_dataset(path: str, dataset_type: str, difference: int) -> ImageFolder:
 
     normalize = transforms.Normalize(mean=mean, std=std)
     transformations = transforms.Compose([
-        # transforms.RandomHorizontalFlip(),
-        # transforms.Resize((224, 224), antialias=True),
         transforms.ToTensor(),
         normalize,
     ])
@@ -211,7 +209,6 @@ def main():
     device: str = 'cuda' if torch.cuda.is_available() and use_cuda else 'cpu'
     logging.info(f'{device=}')
 
-    difference = 2  # 0 = original dataset; 1 = first order difference; 2 = second order difference
     differences = [0, 1, 2]
     for difference in tqdm(differences, total=len(differences)):
         logging.info(f'main loop: {difference=}')
@@ -257,8 +254,6 @@ def main():
 
             logging.info(f'{train_path=}\n{test_path=}')
 
-            dataset_type = 'cifar10'
-            # dataset_type = 'tiny_imagenet_200'
             dataset_type = experiment_dir.split('_')[0] if experiment_dir.startswith('cifar') else 'tiny_imagenet_200'
             logging.info(f'{dataset_type=}')
             assert dataset_type + '_' in train_path and dataset_type + '_' in test_path
@@ -272,10 +267,9 @@ def main():
                 'racheta5': 6000 if 'cifar' in dataset_type else 550,
                 'racheta10': 500,
             }
-            batch_size = batch_sizes[machine_name]
+            batch_size = batch_sizes.get(machine_name, 500)
 
             lr = 1e-2 if 'cifar' in dataset_type else 1e-3
-            # model_type = 'resnet50'
             model_type = 'resnet18'
 
             logging.info(f'{epochs=} {batch_size= } {lr= } {model_type= } {difference=} ')
@@ -296,8 +290,6 @@ def main():
                                'CrossEntropy_'
                                f'{now_str}_dilation={1 if dilation is None else dilation}_epochs={epochs}_batch={batch_size}_lr={lr}_diff={difference}')
 
-            # optimizer = optim.Adam(model.parameters(), lr=lr)
-            # optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
             optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=1e-3)
             logging.info(f'Optimizer: {get_optimizer_name(optimizer)}')
 
@@ -305,7 +297,6 @@ def main():
             gamma = 0.9
             scheduler = StepLR(optimizer, step_size=step_size, gamma=gamma)
             logging.info(f'Scheduler: {get_scheduler_name(scheduler)}, {step_size=}, {gamma=}')
-            # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200, eta_min=1e-4, verbose=True)
 
             experiment_name = (f'{experiment_name}_optimizer={get_optimizer_name(optimizer)}_'
                                f'scheduler={get_scheduler_name(scheduler)}')
@@ -327,9 +318,6 @@ def main():
                 }
             )
             writer.close()
-
-        # check if cifar100_ResNet18_attacker=L2ProjectedGradientDescent_epsilon=0.01 does not work with difference=1 - not working
-        # check if cifar100_ResNet18_attacker=L2ProjectedGradientDescent_epsilon=0.01 does work with difference=2
 
 
 def setup_logger():

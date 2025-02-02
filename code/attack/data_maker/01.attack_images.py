@@ -171,7 +171,6 @@ def main():
                L1ProjectedGradientDescentAttack(),  # L1PGD
                L2ProjectedGradientDescentAttack(),  # L2PGD
         #        L2DeepFoolAttack(loss='crossentropy')
-        # new
         L2AdditiveUniformNoiseAttack(),
     ]
 
@@ -182,23 +181,8 @@ def main():
                 get_tinyimagenet200('../../../images/tiny_imagenet_200', device),
         ):
             epsilons = [
-                #first stage
-                # 0.0002,
-                # 0.0005,
-                # 0.0008,
-                # 0.001,
-                # 0.0015,
-
-                # second stage
-                # 0.002,
-                # 0.003,
                 0.01,
                 0.03,
-                # 0.3,
-
-                # third stage
-                # 0.5,
-                # 1.0,
             ]
 
             for loader, dataset_name in zip((data.train_loader, data.test_loader), (data.train_name, data.test_name)):
